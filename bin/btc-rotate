@@ -1,0 +1,24 @@
+#!/bin/bash -e
+
+declare file="$1" rotate_file=
+declare ts=
+declare -a suffixes=(%Y%m%d %H%M%S %N)
+
+if test -z "$file"; then
+    echo "must specify file to rotate" >&2
+    exit 1
+fi
+
+while test ${#suffixes[@]} -gt 0; do
+    ts=$ts$(date -u +$suffixes)
+    suffixes=("${suffixes[@]:1}")
+    rotate_file="$file-$ts"
+
+    if ! test -f "$rotate_file"; then
+        mv -v "$file" "$rotate_file"
+        exit
+    fi
+done
+
+echo "could not rotate file" >&2
+exit 1

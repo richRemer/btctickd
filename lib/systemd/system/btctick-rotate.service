@@ -1,0 +1,8 @@
+[Unit]
+Description=rotate Bitcoin ticker file
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStartPre=/usr/bin/test -f /var/local/btctick/ticker.data
+ExecStart=/usr/local/bin/btc-rotate /var/local/btctick/ticker.data
