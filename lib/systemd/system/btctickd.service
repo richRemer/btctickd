@@ -1,0 +1,7 @@
+[Unit]
+Description=record current Bitcoin price from public Coinbase API
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/btc-price

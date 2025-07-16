@@ -1,0 +1,12 @@
+#!/bin/bash -e
+
+declare usdbtc
+declare btcusd
+declare url=https://api.coinbase.com/v2/exchange-rates?currency=USD
+declare ts=$(date -u +%Y-%m-%dT%H:%M:%S)
+
+set -o pipefail
+
+usdbtc=$(wget -qO- $url | jq -r .data.rates.BTC)
+btcusd=$(bc <<< "scale=2; 1 / $usdbtc")
+echo $ts $btcusd | tee -a /var/local/btctick/ticker.data
